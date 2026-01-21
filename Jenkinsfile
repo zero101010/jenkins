@@ -23,7 +23,7 @@ pipeline{
             echo 'This will run only if the pipeline succeeds.'
         }
         failure {
-            echo 'This will run only if the pipeline fails.'
+            echo 'This will run only if the pipeline fails. Check the end'
         }
     }
 }
