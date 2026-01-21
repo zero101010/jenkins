@@ -1,15 +1,26 @@
 pipeline{
     agent any
+    tools {
 
+
+    }
+    environment {
+        PROJECT_NAME = 'MyApp'
+        DEPLOY_ENV = 'Production'
+        SERVER_CREDENTIALS = credentials('server-credentials-id')
+    }
     stages {
         stage('Build') {
             steps {
-                echo 'Building...'
+                echo "Building...${PROJECT_NAME} for ${DEPLOY_ENV}"
+                nodejs("Node-Igor"){
+                    sh "npm version"
+                }
             }
         }
         stage('Test') {
             steps {
-                echo 'Testing...'
+                echo "Testing...${PROJECT_NAME} for ${DEPLOY_ENV}"
             }
         }
         stage('Deploy') {
