@@ -1,9 +1,5 @@
 pipeline{
     agent any
-    // tools {
-
-
-    // }
     environment {
         PROJECT_NAME = 'MyApp'
         DEPLOY_ENV = 'Production'
