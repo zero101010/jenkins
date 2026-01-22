@@ -1,3 +1,4 @@
+def gv
 pipeline{
     agent any
     environment {
@@ -10,9 +11,19 @@ pipeline{
         booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Whether to run tests')
     }
     stages {
+        stage ("init") {
+            steps {
+                script {
+                    def usr = SERVER_CREDENTIALS
+                    gv = load 'scriot.groovy'
+                }
+            }
+        }
         stage('Build') {
             steps {
-                echo "Building...${PROJECT_NAME} for ${DEPLOY_ENV} from branch ${params.BRANCH_NAME}"
+                script {
+                    gv.buildApp(PROJECT_NAME, DEPLOY_ENV, params.BRANCH_NAME)  
+                }
             }
         }
         stage('Test') {
