@@ -5,13 +5,14 @@ pipeline{
         DEPLOY_ENV = 'Production'
         SERVER_CREDENTIALS = credentials('server-credentials-id')
     }
+    parameters {
+        string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'Branch to build from')
+        booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Whether to run tests')
+    }
     stages {
         stage('Build') {
             steps {
-                echo "Building...${PROJECT_NAME} for ${DEPLOY_ENV}"
-                nodejs("Node-Igor"){
-                    sh "npm version"
-                }
+                echo "Building...${PROJECT_NAME} for ${DEPLOY_ENV} from branch ${params.BRANCH_NAME}"
             }
         }
         stage('Test') {
@@ -20,6 +21,9 @@ pipeline{
             }
         }
         stage('Deploy') {
+            when {
+                expression { params.RUN_TESTS }
+            }
             steps {
                 echo 'Deploying...'
             }
